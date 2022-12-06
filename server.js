@@ -1,6 +1,9 @@
 import net from 'node:net';
 import { randomUUID } from 'node:crypto';
 
+// TODO: exclude who send message from broadcast
+// TODO: keep client1 online after sending message
+
 const server = net.createServer();
 const usersMap = new Map();
 
