@@ -2,7 +2,6 @@ import net from 'node:net';
 import { randomUUID } from 'node:crypto';
 
 // TODO: exclude who send message from broadcast
-// TODO: keep client1 online after sending message
 
 const server = net.createServer();
 const usersMap = new Map();
@@ -11,6 +10,10 @@ server.on('connection', (socket) => {
   socket.id = 'user_' + randomUUID();
   usersMap.set(socket.id, socket);
   console.log('New connection!', socket.id);
+  const message = {
+    id: socket.id
+  }
+  socket.write(JSON.stringify(message))
 
   socket.on('close', () => {
     console.log('Disconnected!', socket.id);

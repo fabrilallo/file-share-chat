@@ -3,6 +3,10 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
+// TODO: keep client online after sending message
+// TODO: create a prompt in order to let the user choose the file to upload
+
+let id = '';
 const client = net.createConnection({ port: 3000 }, () => {
   console.log('Connected to server!');
 
@@ -17,7 +21,17 @@ const client = net.createConnection({ port: 3000 }, () => {
 });
 
 client.on('data', (data) => {
-  console.log('Received data from server:', data);
+  console.log('Received data from server:', data.toString());
+
+  try {
+    const message = JSON.parse(data);
+
+    if (message && typeof message === 'object') {
+      if (message.id) {
+        id = message.id;
+      }
+    }
+  } catch (error) {}
 });
 
 client.on('end', () => {
